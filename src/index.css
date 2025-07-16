@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+/* index.css */
+body.light {
+  background-color: #e0f2fe; /* Light Blue 100 */
+  color: #0f172a;            /* Slate 900 */
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+body.dark {
+  background-color: #0f172a; /* Slate 900 */
+  color: #e0f2fe;            /* Light Blue 100 */
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
