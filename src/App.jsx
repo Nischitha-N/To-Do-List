@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { MdOutlineModeEditOutline, MdDelete } from "react-icons/md";
-
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Login from './pages/Login';
+import Signup from './pages/SignUp';
 import './App.css';
 
 function App() {
