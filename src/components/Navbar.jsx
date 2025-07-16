@@ -1,8 +1,20 @@
 import React, { useState, useEffect } from 'react';
 
 const Navbar = () => {
-  const [dark, setDark] = useState(false);
   const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const stored = localStorage.getItem('task-user');
+    if (stored) setUser(JSON.parse(stored));
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('task-user');
+    window.location.href = "/login";
+  };
+
+  const [dark, setDark] = useState(false);
+
 
   // Theme toggle effect
   useEffect(() => {
@@ -16,11 +28,7 @@ const Navbar = () => {
     if (savedUser) setUser(JSON.parse(savedUser));
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem("task-user");
-    setUser(null);
-    // Optional: redirect to login page
-  };
+
 
   return (
     <div className="container mx-auto p-4 flex justify-between items-center bg-blue-300 text-blue-950">
@@ -30,23 +38,19 @@ const Navbar = () => {
 
       <ul className="flex gap-6 items-center">
         <li className="cursor-pointer hover:font-bold transition-all">Home</li>
-
+        
         {user ? (
-          <>
-            <li className="font-semibold">👋 {user.name}</li>
-            <button
-              onClick={handleLogout}
-              className="px-3 py-1 bg-white text-blue-600 rounded hover:bg-gray-100"
-            >
-              Logout
-            </button>
-          </>
+          <div className="flex items-center gap-4">
+            <span className="font-semibold">{user.email}</span>
+            <button onClick={handleLogout} className="text-red-600 font-bold hover:underline">Logout</button>
+          </div>
         ) : (
           <>
-            <li className="cursor-pointer hover:font-bold transition-all">Login</li>
-            <li className="cursor-pointer hover:font-bold transition-all">Signup</li>
+            <li onClick={() => window.location.href = '/login'} className='cursor-pointer'>Login</li>
+            <li onClick={() => window.location.href = '/signup'} className='cursor-pointer'>Signup</li>
           </>
         )}
+
 
         <button
           onClick={() => setDark(prev => !prev)}

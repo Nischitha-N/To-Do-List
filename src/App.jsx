@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from './components/Navbar';
 import { MdOutlineModeEditOutline, MdDelete } from "react-icons/md";
+
 import './App.css';
 
 function App() {
@@ -48,11 +48,22 @@ function App() {
     );
   };
 
+  useEffect(() => {
+  const user = localStorage.getItem("task-user");
+  if (!user) window.location.href = "/login"; // Simple redirect
+}, []);
+
+
   const visibleTodos = showCompleted ? todos.filter(t => t.isCompleted) : todos;
 
   return (
-    <>
+    <>    <Router>
       <Navbar />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+      </Routes>
+    </Router>
       <div className="flex justify-center">
         <div className="w-3/4 flex flex-col bg-blue-950 text-white rounded-md m-5 p-3 space-y-4 min-h-[80vh]">
 
