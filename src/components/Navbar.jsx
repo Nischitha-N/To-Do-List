@@ -1,36 +1,58 @@
 import React, { useState, useEffect } from 'react';
 
 const Navbar = () => {
-  // 1. Create dark mode state
   const [dark, setDark] = useState(false);
+  const [user, setUser] = useState(null);
 
-  // 2. Apply dark/light class to <body> on state change
+  // Theme toggle effect
   useEffect(() => {
-    if (dark) {
-      document.body.classList.add("dark");
-      document.body.classList.remove("light");
-    } else {
-      document.body.classList.add("light");
-      document.body.classList.remove("dark");
-    }
+    document.body.classList.toggle("dark", dark);
+    document.body.classList.toggle("light", !dark);
   }, [dark]);
+
+  // Load user from localStorage
+  useEffect(() => {
+    const savedUser = localStorage.getItem("task-user");
+    if (savedUser) setUser(JSON.parse(savedUser));
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("task-user");
+    setUser(null);
+    // Optional: redirect to login page
+  };
 
   return (
     <div className="container mx-auto p-4 flex justify-between items-center bg-blue-300 text-blue-950">
-      <div className="text-xl font-bold hover:text-blue-600 hover:drop-shadow-[0_0_10px_rgba(59,130,246,0.8)] transition-all duration-300">
+      <div className="text-xl font-bold hover:text-blue-600 transition-all duration-300">
         TaskMate
       </div>
 
       <ul className="flex gap-6 items-center">
-        <li className='cursor-pointer hover:font-bold transition-all'>All Tasks</li>
-        <li className='cursor-pointer hover:font-bold transition-all'>Completed</li>
-        <li className='cursor-pointer hover:font-bold transition-all'>Pending</li>
-        <li className='cursor-pointer hover:font-bold transition-all'>User</li>
+        <li className="cursor-pointer hover:font-bold transition-all">Home</li>
+
+        {user ? (
+          <>
+            <li className="font-semibold">👋 {user.name}</li>
+            <button
+              onClick={handleLogout}
+              className="px-3 py-1 bg-white text-blue-600 rounded hover:bg-gray-100"
+            >
+              Logout
+            </button>
+          </>
+        ) : (
+          <>
+            <li className="cursor-pointer hover:font-bold transition-all">Login</li>
+            <li className="cursor-pointer hover:font-bold transition-all">Signup</li>
+          </>
+        )}
+
         <button
           onClick={() => setDark(prev => !prev)}
-          className="px-4 py-2 bg-white text-blue-600 rounded hover:bg-gray-100"
+          className="px-3 py-1 bg-white text-blue-600 rounded hover:bg-gray-100"
         >
-          {dark ? '☀️ Light Mode' : '🌙 Dark Mode'}
+          {dark ? '☀️ Light' : '🌙 Dark'}
         </button>
       </ul>
     </div>
